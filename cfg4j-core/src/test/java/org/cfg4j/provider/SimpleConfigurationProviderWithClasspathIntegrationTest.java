@@ -22,8 +22,10 @@ import org.cfg4j.source.ConfigurationSource;
 import org.cfg4j.source.classpath.ClasspathConfigurationSource;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.List;
 
 
 class SimpleConfigurationProviderWithClasspathIntegrationTest {
@@ -47,6 +49,17 @@ class SimpleConfigurationProviderWithClasspathIntegrationTest {
     ConfigurationProvider provider = getConfigurationProvider(path);
 
     assertThat(provider.getProperty("someSetting", Integer.class)).isEqualTo(42);
+  }
+
+  @Test
+  void readsYamlLists() {
+    String path = "org/cfg4j/provider/SimpleConfigurationProviderIntegrationTest_readsYamlLists.yaml";
+
+    ConfigurationProvider provider = getConfigurationProvider(path);
+
+    assertThat(provider.getProperty("titles", List.class)).containsExactly(
+      "War and Peace", "Girl, Interrupted"
+    );
   }
 
   private ConfigurationProvider getConfigurationProvider(final String path) {
